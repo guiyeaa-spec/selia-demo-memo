@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Serena Care - Demo Mobile</title>
+  <style>
+    :root{
+      --bg:#f6f3f8;
+      --surface:#ffffff;
+      --surface-2:#f3eef7;
+      --line:#e7dfeb;
+      --primary:#5d1d63;
+      --primary-2:#7b4fa1;
+      --text:#35193a;
+      --muted:#7f6d84;
+      --shadow:0 10px 25px rgba(74, 33, 80, .08);
+      --radius:22px;
+      --radius-sm:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;color:var(--text)}
+    body{display:flex;justify-content:center}
+    .phone{
+      width:100%; max-width:430px; min-height:100vh; background:var(--bg);
+      position:relative; overflow-x:hidden;
+      padding-bottom:100px;
+    }
+    .status{height:44px; display:flex; align-items:center; justify-content:space-between; padding:0 20px; font-weight:700; color:#111; background:#fff}
+    .status .icons{font-size:14px; letter-spacing:2px}
+    .screen{display:none; padding:10px 18px 24px}
+    .screen.active{display:block}
+    h1,h2,h3,p{margin:0}
+    .title-row{display:flex; justify-content:space-between; align-items:center; margin:18px 0 18px}
+    .title{font-family:Georgia, 'Times New Roman', serif; color:var(--primary); font-size:31px; line-height:1.05; letter-spacing:-.02em}
+    .title.sm{font-size:25px}
+    .icon-btn{width:44px;height:44px;border-radius:50%;border:none;background:#fff;color:var(--primary);display:grid;place-items:center;box-shadow:var(--shadow);font-size:22px}
+    .icon-btn.purple{background:var(--primary);color:#fff;box-shadow:none}
+    .search-hero{background:#fff;border-radius:0 0 18px 18px; margin:-10px -18px 18px; padding:18px 18px 16px; box-shadow:0 2px 10px rgba(0,0,0,.04)}
+    .subtitle{color:var(--muted); font-size:15px; line-height:1.4}
+    .top-action{display:flex;justify-content:flex-end}
+    .profile-card,.ref-card,.section-card,.specialist-card,.content-card,.menu-card,.searchbox,.topic-pill,.short-card{background:var(--surface); border:1px solid var(--line)}
+    .profile-card{display:flex; gap:14px; align-items:flex-start; padding:16px; border-radius:18px; box-shadow:var(--shadow)}
+    .avatar{width:58px;height:58px;border-radius:50%;background:#f4eef6;display:grid;place-items:center;font-size:28px;color:var(--primary)}
+    .chev{margin-left:auto;color:var(--primary);font-weight:800;font-size:24px;line-height:1}
+    .name{font-size:17px;font-weight:800;color:var(--text)}
+    .email{color:var(--muted); font-size:14px; margin-top:4px}
+    .mini-link{display:flex; align-items:center; gap:8px; margin-top:10px; color:var(--primary); font-weight:700; font-size:14px}
+    .ref-card{margin-top:12px; border-radius:18px; padding:18px; display:flex; gap:12px; box-shadow:var(--shadow)}
+    .ref-icon,.list-icon{width:34px;height:34px;border-radius:12px;background:#f3ebf5;color:var(--primary);display:grid;place-items:center;font-size:20px;flex:0 0 auto}
+    .section-title{font-family:Georgia, 'Times New Roman', serif; color:var(--primary); font-size:28px; margin:28px 0 12px}
+    .list{background:var(--surface); border:1px solid var(--line); border-radius:18px; overflow:hidden}
+    .row{display:flex; align-items:center; gap:14px; padding:18px 14px; border-bottom:1px solid var(--line)}
+    .row:last-child{border-bottom:none}
+    .row .label{font-size:18px; color:#4f4452}
+    .row .chev{font-size:26px; margin-left:auto; color:#6e5f73}
+    .help-note{font-size:13px;color:var(--muted)}
+
+    .tiles-hero{background:linear-gradient(180deg,#c9befd 0%, #d8cffd 45%, var(--bg) 45%, var(--bg) 100%); margin:-10px -18px 0; padding:16px 18px 24px}
+    .resource-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:20px}
+    .short-card{border-radius:18px; aspect-ratio:1/1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; color:var(--primary); box-shadow:var(--shadow)}
+    .short-card .emoji{font-size:24px}
+    .short-card span{font-size:14px; text-align:center; font-weight:600}
+    .section-head{display:flex; justify-content:space-between; align-items:center; margin:26px 0 14px}
+    .section-head .seeall{color:var(--primary); font-weight:800; font-size:16px}
+    .h-scroll{display:flex; gap:14px; overflow-x:auto; padding-bottom:4px; scrollbar-width:none}
+    .h-scroll::-webkit-scrollbar{display:none}
+    .content-card{min-width:168px; width:168px; border-radius:24px; overflow:hidden; box-shadow:var(--shadow); position:relative; background:#ddd}
+    .content-bg{height:250px; padding:14px; display:flex; flex-direction:column; justify-content:space-between; color:white; background:linear-gradient(145deg,#1f5f52,#0f2f2d)}
+    .content-bg.bg2{background:linear-gradient(145deg,#7865c8,#43245f)}
+    .content-bg.bg3{background:linear-gradient(145deg,#cf8558,#713c5e)}
+    .content-bg.bg4{background:linear-gradient(145deg,#79894d,#4b2b50)}
+    .content-bg.bg5{background:linear-gradient(145deg,#3f4c8b,#111d3d)}
+    .tag{display:inline-flex; align-items:center; gap:7px; background:#fff; color:var(--primary); padding:8px 12px; border-radius:12px; font-weight:700; font-size:14px; width:max-content}
+    .content-title{font-family:Georgia, serif; font-size:17px; line-height:1.08; text-shadow:0 2px 10px rgba(0,0,0,.18)}
+    .duration{font-size:13px; opacity:.96; display:flex; align-items:center; gap:5px}
+    .chips{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:8px}
+    .topic-pill{padding:9px 14px; border-radius:14px; background:#fff; color:var(--primary); font-weight:600; font-size:14px}
+
+    .option-stack{display:grid; gap:0; background:#fff; border-radius:18px; overflow:hidden; border:1px solid var(--line); box-shadow:var(--shadow)}
+    .menu-card{border:none; border-bottom:1px solid var(--line); border-radius:0; padding:20px 16px; display:flex; gap:14px; align-items:flex-start}
+    .menu-card:last-child{border-bottom:none}
+    .menu-card .text b{font-size:17px;color:var(--primary)}
+    .menu-card .text p{margin-top:4px; color:var(--muted); font-size:15px; line-height:1.35}
+    .menu-card .chev{font-size:24px}
+    .menu-banner{padding:18px 16px; border-radius:18px; background:#f2eef7; border:1px solid #e4ddee; display:flex; align-items:center; gap:14px; margin:18px 0 16px}
+    .menu-banner b{font-size:18px;color:var(--primary)}
+    .small-head{color:#8f8295; font-weight:800; font-size:13px; letter-spacing:.04em; margin:14px 0 10px; text-transform:uppercase}
+
+    .searchbox{display:flex; align-items:center; gap:10px; border-radius:16px; padding:14px 16px; box-shadow:var(--shadow)}
+    .searchbox input{border:none; outline:none; flex:1; font-size:16px; color:#5b535d; background:transparent}
+    .filter-row{display:flex; gap:10px; overflow-x:auto; margin:16px 0 18px; scrollbar-width:none}
+    .filter-row::-webkit-scrollbar{display:none}
+    .filter{padding:12px 16px; border-radius:14px; background:#eee7f7; color:var(--primary); border:1px solid #ddcfee; font-weight:700; white-space:nowrap}
+    .count{font-size:18px; color:#4b434d; margin:0 0 14px}
+    .count b{color:var(--text)}
+    .specialist-card{border-radius:24px; padding:14px; margin-bottom:18px; box-shadow:var(--shadow)}
+    .badge{display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:999px; background:#eae4fb; color:#7160b0; font-weight:800; font-size:13px; margin-bottom:12px}
+    .sp-top{display:flex; gap:14px}
+    .sp-photo{width:112px; height:112px; border-radius:18px; background:linear-gradient(145deg,#a45b35,#e7cb97); position:relative; overflow:hidden; flex:0 0 auto}
+    .sp-photo.alt{background:linear-gradient(145deg,#9fa59f,#dadada)}
+    .sp-flag{position:absolute; left:8px; bottom:8px; width:24px; height:18px; border-radius:4px; background:linear-gradient(180deg,#f8d23f 0 33%, #284ea7 33% 66%, #c92c30 66% 100%); border:2px solid white}
+    .play-mini{position:absolute; right:8px; bottom:8px; width:32px; height:32px; border-radius:50%; background:#fff; color:var(--primary); display:grid; place-items:center; font-size:14px; box-shadow:var(--shadow)}
+    .sp-name{font-family:Georgia, serif; font-size:24px; line-height:1.05; color:var(--primary)}
+    .sp-meta{color:var(--muted); font-size:14px; margin-top:4px}
+    .sp-rating,.sp-lang{display:flex; align-items:center; gap:7px; margin-top:6px; color:#5a515d; font-size:14px}
+    .spec-title{margin-top:14px; font-size:16px; font-weight:700; color:#4d4450}
+    .spec-tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px}
+    .spec-tags span{background:#f3eef7; border-radius:999px; padding:7px 11px; font-size:13px; color:#5b4d61}
+    .divider{height:1px; background:var(--line); margin:14px 0}
+    .price-line,.avail-line{display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:17px; color:#4d4450}
+    .price-line .price,.avail-line .time{font-weight:800; color:var(--text)}
+    .btn-row{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px}
+    .btn{height:52px; border-radius:16px; font-weight:800; font-size:18px; border:2px solid var(--primary)}
+    .btn.outline{background:#fff; color:var(--primary)}
+    .btn.fill{background:var(--primary); color:#fff}
+
+    .bottom-nav{position:fixed; left:50%; transform:translateX(-50%); bottom:0; width:100%; max-width:430px; background:#fff; border-top:1px solid var(--line); display:grid; grid-template-columns:repeat(5,1fr); padding:9px 4px calc(9px + env(safe-area-inset-bottom)); z-index:10}
+    .nav-btn{background:none; border:none; color:#9a91a5; display:flex; flex-direction:column; align-items:center; gap:5px; font-size:13px; font-weight:600}
+    .nav-btn .ico{font-size:23px; line-height:1}
+    .nav-btn.active{color:var(--primary)}
+
+    .home-card{background:linear-gradient(140deg,#5d1d63,#824da1 68%,#b59cfd); border-radius:26px; padding:22px; color:#fff; box-shadow:var(--shadow)}
+    .home-card h2{font-family:Georgia, serif; font-size:34px; line-height:1.02}
+    .home-card p{margin-top:10px; color:rgba(255,255,255,.9); line-height:1.4}
+    .mini-stats{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:18px}
+    .stat{background:#fff; border:1px solid var(--line); border-radius:18px; padding:16px; box-shadow:var(--shadow)}
+    .stat b{display:block; color:var(--primary); font-size:16px; margin-bottom:8px}
+    .muted{color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <div class="status">
+      <div>2:21</div>
+      <div class="icons">▮▮▮ ))) ▱</div>
+    </div>
+
+    <section class="screen" id="inicio">
+      <div class="search-hero">
+        <div class="title-row" style="margin:0 0 8px">
+          <div class="title sm">Inicio</div>
+          <button class="icon-btn">🔍</button>
+        </div>
+      </div>
+      <div class="home-card">
+        <div style="font-size:12px;font-weight:800;letter-spacing:.12em;opacity:.85;text-transform:uppercase">Demo actualizada</div>
+        <h2>Una experiencia móvil mucho más cercana al flujo real.</h2>
+        <p>Con las capturas que enviaste armé una base visual y funcional para continuar la evolución del producto.</p>
+      </div>
+      <div class="mini-stats">
+        <div class="stat"><b>Para ti</b><span class="muted">Recursos, temas y destacados.</span></div>
+        <div class="stat"><b>Agendar</b><span class="muted">Búsqueda guiada y orientación.</span></div>
+        <div class="stat"><b>Especialistas</b><span class="muted">Tarjetas con filtros y agenda.</span></div>
+        <div class="stat"><b>Perfil</b><span class="muted">Cuenta, pagos, ayuda y legal.</span></div>
+      </div>
+    </section>
+
+    <section class="screen active" id="parati">
+      <div class="tiles-hero">
+        <div class="title-row" style="margin:6px 0 0">
+          <div class="title sm">Para ti</div>
+          <button class="icon-btn">🔍</button>
+        </div>
+        <p class="subtitle" style="margin-top:18px;color:#4f4462;font-size:17px">Miles de recursos que te ayudarán a sentirte mejor</p>
+        <div class="resource-grid">
+          <div class="short-card"><div class="emoji">▶️</div><span>Video guía</span></div>
+          <div class="short-card"><div class="emoji">📖</div><span>Blog</span></div>
+          <div class="short-card"><div class="emoji">🧘</div><span>Meditación</span></div>
+          <div class="short-card"><div class="emoji">⚙️</div><span>Herramienta</span></div>
+          <div class="short-card"><div class="emoji">🎧</div><span>Podcast</span></div>
+          <div class="short-card"><div class="emoji">😮‍💨</div><span>Respiración</span></div>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <div class="title">Contenidos destacados</div>
+      </div>
+      <div class="h-scroll">
+        <div class="content-card"><div class="content-bg"><div class="tag">📖 Herramienta</div><div><div class="content-title">3 técnicas para gestionar el estrés laboral</div><div class="duration">◷ 5 min</div></div></div></div>
+        <div class="content-card"><div class="content-bg bg2"><div class="tag">📖 Herramienta</div><div><div class="content-title">¿Y tú cómo estás?</div><div class="duration">◷ 5 min</div></div></div></div>
+        <div class="content-card"><div class="content-bg bg3"><div class="tag">🧘 Meditación</div><div><div class="content-title">Relajación profunda</div><div class="duration">◷ 4 min</div></div></div></div>
+      </div>
+
+      <div class="section-head"><div class="title">Temas</div></div>
+      <div class="chips">
+        <div class="topic-pill">Ansiedad</div><div class="topic-pill">Hábitos</div><div class="topic-pill">Trabajo</div><div class="topic-pill">Traumas</div><div class="topic-pill">Depresión</div><div class="topic-pill">Psicología</div><div class="topic-pill">Liderazgo</div><div class="topic-pill">Productividad</div><div class="topic-pill">Meditación</div><div class="topic-pill">Yoga</div>
+      </div>
+
+      <div class="section-head"><div class="title">Crecimiento personal</div><div class="seeall">Ver todo →</div></div>
+      <div class="h-scroll">
+        <div class="content-card"><div class="content-bg"><div class="tag">📖 Herramienta</div><div><div class="content-title">Ritual de agradecimiento</div><div class="duration">◷ 2 min</div></div></div></div>
+        <div class="content-card"><div class="content-bg bg5"><div class="tag">📖 Herramienta</div><div><div class="content-title">Liderar sin vaciarte</div><div class="duration">◷ 1 min</div></div></div></div>
+      </div>
+
+      <div class="section-head"><div class="title">Mindfulness</div><div class="seeall">Ver todo →</div></div>
+      <div class="h-scroll">
+        <div class="content-card"><div class="content-bg bg3"><div class="tag">▶️ Meditación</div><div><div class="content-title">Relajación profunda</div><div class="duration">◷ 4 min</div></div></div></div>
+        <div class="content-card"><div class="content-bg bg2"><div class="tag">▶️ Video guía</div><div><div class="content-title">7 días de yoga para volver a ti</div><div class="duration">◷ 30 min</div></div></div></div>
+      </div>
+
+      <div class="section-head"><div class="title">Familia y crianza</div><div class="seeall">Ver todo →</div></div>
+      <div class="h-scroll">
+        <div class="content-card"><div class="content-bg bg3"><div class="tag">🎧 Podcast</div><div><div class="content-title">Lo que tanto rechacé fue lo que llegó a salvarme</div><div class="duration">◷ 33 min</div></div></div></div>
+        <div class="content-card"><div class="content-bg bg4"><div class="tag">🎧 Podcast</div><div><div class="content-title">Crecí sintiendo constantemente rechazo</div><div class="duration">◷ 38 min</div></div></div></div>
+      </div>
+    </section>
+
+    <section class="screen" id="agendar">
+      <div class="title-row">
+        <div class="title">Elige con quién quieres recibir apoyo</div>
+      </div>
+      <div class="menu-banner">
+        <div class="list-icon">👥</div>
+        <div style="flex:1">
+          <b>Mis especialistas</b>
+          <div class="subtitle">Tu lista de especialistas</div>
+        </div>
+        <div class="chev">›</div>
+      </div>
+      <div class="small-head">Buscar nuevo especialista</div>
+      <div class="option-stack">
+        <div class="menu-card"><div class="list-icon">☑️</div><div class="text"><b>Responder cuestionario</b><p>Te recomendamos un especialista con base en tus respuestas.</p></div><div class="chev">›</div></div>
+        <div class="menu-card"><div class="list-icon">✨</div><div class="text"><b>Búsqueda inteligente</b><p>Cuéntanos qué necesitas y encontraremos especialistas para ti.</p></div><div class="chev">›</div></div>
+        <div class="menu-card"><div class="list-icon">🗣️</div><div class="text"><b>Agendar orientación</b><p>En 15 minutos te escuchamos y te brindamos una recomendación.</p></div><div class="chev">›</div></div>
+        <div class="menu-card"><div class="list-icon">🔎</div><div class="text"><b>Explorar especialistas</b><p>Revisa los perfiles disponibles y elige el que mejor se ajuste a lo que necesitas.</p></div><div class="chev">›</div></div>
+      </div>
+    </section>
+
+    <section class="screen" id="especialistas">
+      <div class="title-row">
+        <div class="title">Especialistas</div>
+      </div>
+      <div class="searchbox">
+        <input placeholder="Buscar especialista por nombre" />
+        <div style="font-size:24px;color:var(--primary)">🔍</div>
+      </div>
+      <div class="filter-row">
+        <div class="filter">☷ Filtros</div>
+        <div class="filter">✨ Búsqueda inteligente</div>
+        <div class="filter">Tipo de especialista</div>
+      </div>
+      <div class="count"><b>207</b> Especialistas disponibles para ti</div>
+
+      <div class="specialist-card">
+        <div class="badge">⚙ Especialista destacado</div>
+        <div class="sp-top">
+          <div class="sp-photo"><div class="sp-flag"></div><div class="play-mini">▶</div></div>
+          <div style="flex:1">
+            <div class="sp-name">Laura Valeria Maldonado</div>
+            <div class="sp-meta">Psicólogos en línea · 13 años exp.</div>
+            <div class="sp-rating">⭐ 5.0</div>
+            <div class="sp-lang">◉ Español</div>
+          </div>
+        </div>
+        <div class="spec-title">Se especializa en:</div>
+        <div class="spec-tags"><span>Relaciones interpersonales</span><span>Ansiedad</span><span>Depresión</span><span>Trauma</span><span>Autolesión</span><span>Ideación suicida</span><span>+5</span></div>
+        <div class="divider"></div>
+        <div class="price-line"><span>Servicios desde:</span><span class="price">$ 43,24 USD</span><span style="margin-left:auto;color:var(--primary);font-weight:700">Ver todos ›</span></div>
+        <div class="divider"></div>
+        <div class="avail-line"><span>Disponible</span><span class="time">22 de sep. · 05:00 p.m.</span></div>
+        <div class="btn-row"><button class="btn outline">Ver perfil</button><button class="btn fill">🗓 Agendar</button></div>
+      </div>
+
+      <div class="specialist-card">
+        <div class="badge">⚙ Especialista destacado</div>
+        <div class="sp-top">
+          <div class="sp-photo alt"></div>
+          <div style="flex:1">
+            <div class="sp-name">César Moreno</div>
+            <div class="sp-meta">Psicólogos en línea · 11 años exp.</div>
+            <div class="sp-rating">⭐ 4.9</div>
+            <div class="sp-lang">◉ Español</div>
+          </div>
+        </div>
+        <div class="spec-title">Se especializa en:</div>
+        <div class="spec-tags"><span>Estrés</span><span>Burnout</span><span>Familia</span><span>Hábitos</span><span>Autoestima</span></div>
+        <div class="divider"></div>
+        <div class="price-line"><span>Servicios desde:</span><span class="price">$ 39,00 USD</span><span style="margin-left:auto;color:var(--primary);font-weight:700">Ver todos ›</span></div>
+        <div class="divider"></div>
+        <div class="avail-line"><span>Disponible</span><span class="time">25 de sep. · 10:30 a.m.</span></div>
+        <div class="btn-row"><button class="btn outline">Ver perfil</button><button class="btn fill">🗓 Agendar</button></div>
+      </div>
+    </section>
+
+    <section class="screen" id="perfil">
+      <div class="title-row">
+        <div class="title">Mi perfil</div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:6px; color:var(--primary)">
+          <button class="icon-btn purple">?</button>
+          <div style="font-size:14px;color:#8b7a90">Ayuda</div>
+        </div>
+      </div>
+      <div class="profile-card">
+        <div class="avatar">A</div>
+        <div style="flex:1">
+          <div class="name">Alejandro Ayala</div>
+          <div class="email">alejandro.ayala101@icloud.com</div>
+          <div class="mini-link">Administrar cuentas familiares <span>›</span></div>
+        </div>
+      </div>
+      <div class="ref-card">
+        <div class="ref-icon">💜</div>
+        <div>
+          <div class="name" style="font-size:18px">Refiere a un amigo</div>
+          <div class="subtitle" style="margin-top:6px">Ayuda a alguien a empezar su camino hacia el bienestar y recibe créditos por cada referido.</div>
+          <div class="mini-link" style="margin-top:12px">Invitar ahora →</div>
+        </div>
+      </div>
+
+      <div class="section-title">General</div>
+      <div class="list">
+        <div class="row"><div class="list-icon">⚙️</div><div class="label">Configuración de cuenta</div><div class="chev">›</div></div>
+        <div class="row"><div class="list-icon">👜</div><div class="label">Mis paquetes</div><div class="chev">›</div></div>
+        <div class="row"><div class="list-icon">🗓</div><div class="label">Mis citas</div><div class="chev">›</div></div>
+        <div class="row"><div class="list-icon">💲</div><div class="label">Pagos</div><div class="chev">›</div></div>
+        <div class="row"><div class="list-icon">👥</div><div class="label">Mis especialistas</div><div class="chev">›</div></div>
+        <div class="row"><div class="list-icon">💜</div><div class="label">Especialistas favoritos</div><div class="chev">›</div></div>
+        <div class="row"><div class="list-icon">🔎</div><div class="label">Especialistas recomendados</div><div class="chev">›</div></div>
+      </div>
+
+      <div class="section-title">Ayuda</div>
+      <div class="list">
+        <div class="row"><div class="list-icon">📘</div><div class="label">Centro de ayuda</div><div class="chev">›</div></div>
+        <div class="row"><div class="list-icon">📕</div><div class="label">Legal</div><div class="chev">›</div></div>
+        <div class="row"><div class="list-icon">💬</div><div class="label">Déjanos un comentario</div><div class="chev">›</div></div>
+      </div>
+    </section>
+
+    <nav class="bottom-nav">
+      <button class="nav-btn" data-target="inicio"><div class="ico">⌂</div><span>Inicio</span></button>
+      <button class="nav-btn active" data-target="parati"><div class="ico">▦</div><span>Para ti</span></button>
+      <button class="nav-btn" data-target="agendar"><div class="ico">🗓</div><span>Agendar</span></button>
+      <button class="nav-btn" data-target="especialistas"><div class="ico">👥</div><span>Especialistas</span></button>
+      <button class="nav-btn" data-target="perfil"><div class="ico">👤</div><span>Perfil</span></button>
+    </nav>
+  </div>
+
+  <script>
+    const btns=[...document.querySelectorAll('.nav-btn')];
+    const screens=[...document.querySelectorAll('.screen')];
+    btns.forEach(btn=>btn.addEventListener('click',()=>{
+      const target=btn.dataset.target;
+      screens.forEach(s=>s.classList.toggle('active', s.id===target));
+      btns.forEach(b=>b.classList.toggle('active', b===btn));
+      window.scrollTo({top:0, behavior:'smooth'});
+    }));
+  </script>
+</body>
+</html>
